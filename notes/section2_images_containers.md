@@ -225,6 +225,11 @@ docker rmi <image ID>
 docker image prune
 ```
 
+## Remove all unused images:
+```
+docker container prune
+```
+
 ## Remove a docker container automatically as soon as it's stopped by instructing it at it's run time
 ```
 docker run -p 8000:80 -d --rm <image name>
