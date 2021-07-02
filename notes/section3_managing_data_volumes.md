@@ -19,18 +19,22 @@ VOLUME [ "/app/feedback"]
 
 CMD ["node", "server.js"]
 ```
+
 - Then build image again with:
 ```
 docker build -t feedback-node:volmes .
 ```
+
 - Then can run the container in detached mode and remove once stopped - So if container is removed then started again, volume data will persist
 ```
 docker run -p 3004:80 -d --name feedback-app --rm feedback-node:volumes
 ```
+
 - If running the above command will keep loading the submit once I submit the data and crashes, run docker logs to see what happened
 ```
 docker logs <container name>
 ```
+
 - But removing container and starting and running another one still won't persist data yet...
 
 ---
@@ -155,6 +159,7 @@ docker run -v /path/to/code:/app/code
 ```
 docker run -d -p 3004:80 --name feedback-app --rm -v <name of volume>:<path in docker container> -v "<absolute path from our local machine project folder>:<path in docker container to put the source code from local machine to>:ro" -v /app/node_modules feedback-node:volumes
 ```  
+
 - But caveat is that it'll prevent writing to any folder in the directory we specified with :ro flag so have to put another -v flag for other specific file types we do want docker to change like the /temp folder in the node app
 ```
 docker run -d -p 3004:80 --name feedback-app --rm -v <name of volume>:<path in docker container> -v "<absolute path from our local machine project folder>:<path in docker container to put the source code from local machine to>:ro" -v /app/node_modules -v /app/temp feedback-node:volumes

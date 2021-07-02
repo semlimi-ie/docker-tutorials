@@ -32,7 +32,7 @@ docker run -d --name <name of mongodb container> mongo
 ```
 docker container inspect <name of mongodb container>
 ```
-    - response object will show: `"IPAddress": "172.17.0.2"`
+- response object will show: `"IPAddress": "172.17.0.2"`
 3. Paste in that IP address into the app.js node file where mongoDB localhost or docker.host.container is specified
 
 &nbsp;
@@ -44,11 +44,13 @@ docker container inspect <name of mongodb container>
 ```
 docker network --help
 ```
-    - create docker network with custom name
+    
+- create docker network with custom name
 ```
 docker network create <custom network name>
 ```
-    - list out networks
+    
+- list out networks
 ```
 docker network ls
 ```
@@ -78,14 +80,15 @@ ex. `docker run --name favorites-app --network favorites-net -d --rm -p 3004:300
 ```
 docker run --name <container name> --network <network name> -d --rm -p 3004:3000 <image name>
 ```
-    - see that it's running properly
+    
+- see that it's running properly
 ```
 docker logs <container name>
 ```
 
 &nbsp;
 
-> ocker Networks actually support different kinds of "Drivers" which influence the behavior of the Network. The default driver is the "bridge" driver - it provides the behavior shown in this module i.e. Containers can find each other by name if they are in the same Network. The driver can be set when a Network is created, simply by adding the --driver option. `docker network create --driver bridge my-net`
+> Docker Networks actually support different kinds of "Drivers" which influence the behavior of the Network. The default driver is the "bridge" driver - it provides the behavior shown in this module i.e. Containers can find each other by name if they are in the same Network. The driver can be set when a Network is created, simply by adding the --driver option. `docker network create --driver bridge my-net`
 
 
 Docker also supports these alternative drivers - though you will use the "bridge" driver in most cases:
