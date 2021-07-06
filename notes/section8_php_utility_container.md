@@ -162,3 +162,71 @@ docker-compose up -d --build server
 ```
 docker-compose run --rm artisan migrate
 ```
+
+&nbsp;
+8. Make nginx dockerfile 
+- Add an nginx.conf file in dockerfiles folder - 
+    - import nginx from docker official image
+    - set working directory in docker container to /etc/nginx/conf.d
+    - copy our local machine nginx.conf file to the working directory in docker container
+    - Rename nginx.conf file in docker container to default.conf file in that docker container using `RUN mv` command
+    - switch working directory to instead /var/www/html
+    - Then copy our source code folder, src into the docker container /var/www/html directory 
+    - nginx has a default command to start the web server so no need to specify any commands
+    - Tweak docker-compose file to user the nginx.dockerfile
+
+
+```
+FROM nginx:stable-alpine
+
+WORKDIR /etc/nginx/conf.d
+
+COPY nginx/nginx.conf .
+
+RUN mv nginx.conf default.conf
+
+WORKDIR /var/www/html
+
+COPY src .
+```
+- Tweaked docker-compose file for `nginx` server 
+    - context matters here because the docker file will both run, build AND set some files/folders in the directory we specify so we set context to root directory path rather path where dockerfile is so all our files/folders are in same directory  
+```
+  server:
+    # image: 'nginx:stable-alpine'
+    build:
+      context: .
+      dockerfile: dockerfiles/nginx.dockerfile
+    ports: 
+      - '8000:80'
+    # volumes:
+    #   - ./src:/var/www/html 
+    #   - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on: 
+      - php
+      - mysql
+```
+
+- Also have to tweak php.dockerfile 
+    - because what we RUN won't be in production code only in development so, we copy src folder into working directory of php.dockerfile which is /var/www/html so comment out the `volumes` for php service/container in docker-compose
+    - build in the current root directory now instead of referring to dockerfiles folder path
+
+```
+  php:
+    build:
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
+    # volumes:
+    #   - ./src:/var/www/html:delegated
+```
+
+```
+docker-compose up -d --build server
+```
+
+- Will give permission denied error now because php image denies read/write access to our src folder in the container by the container so add this to the phd.dockerfile
+    - chown means change ownership of folder/file, change who's allowed to read/write to folders
+
+```
+RUN chown -R www-data:www-data /var/www/html
+```
