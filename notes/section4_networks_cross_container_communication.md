@@ -41,6 +41,7 @@ docker container inspect <name of mongodb container>
 - Docker automatically looks up IP addresses of the specified containers in the specified network - docker internal network 
 - 1. First create a network with your custom name for the network:
     - help options
+    
 ```
 docker network --help
 ```
