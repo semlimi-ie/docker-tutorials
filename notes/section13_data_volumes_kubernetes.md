@@ -206,7 +206,7 @@ spec:
 ```
 
 3. We now need to set up the Persisten Volume Claim that's in the pods for the pods to access the Persistent Volume. That claim needs to be made by the pods that needs to use the specific Persistent Volume. 
-    - We make the PV claim for the pods by making a new file in root project directory, let's call it host-pvc.yaml
+    - We make the PV claim for the pods by making a new file in root project directory, let's call it `host-pvc.yaml`
     - `volumeName` under spec is the name of the parent Persistent Volume we want to access 
     - `accessModes` options is also limited to `ReadWriteOnce` only for hostPath. But other options are `ReadOnlyMany` and `ReadWriteMany`
     - `resources` means capacity. For `storage` under resources you can only get how much you provisioned in the parent persistent volume yaml file. 
